@@ -24,7 +24,7 @@ source "${SCRIPT_DIR}/_utils.sh"
 
 ###########################
 
-check_variable_set FLINK_MINOR_VERSION
+check_variable_set FLINK_VERSION
 
 ###########################
 
@@ -37,7 +37,8 @@ function deploy_staging_jars {
     echo "Jars should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
     exit 1
   fi
-  version=${project_version}-${FLINK_MINOR_VERSION}
+  flink_minor_version=$(echo ${FLINK_VERSION} | sed "s/.[0-9]\+$//")
+  version=${project_version}-${flink_minor_version}
 
   echo "Deploying jars v${version} to repository.apache.org"
   echo "To revert this step, login to 'https://repository.apache.org' -> 'Staging repositories' -> Select repository -> 'Drop'"
@@ -47,7 +48,7 @@ function deploy_staging_jars {
   set_pom_version "${version}"
 
   options="-Prelease,docs-and-source -DskipTests -DretryFailedDeploymentCount=10"
-  ${MVN} clean deploy ${options}
+  ${MVN} clean deploy ${options} -Dflink.version=${FLINK_VERSION}
 
   rm -rf "${clone_dir}"
 }
