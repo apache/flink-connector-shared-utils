@@ -3,7 +3,7 @@ This is a collection of release utils for [Apache Flink](https://flink.apache.or
 # Integration
 
 The scripts assume that they are integrated into a connector repo as a submodule into the connector repo
-under `tools/releasing/<some directory>`.
+under `tools/releasing/shared`.
 
 # Usage
 
