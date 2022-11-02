@@ -37,7 +37,7 @@ function deploy_staging_jars {
     echo "Jars should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
     exit 1
   fi
-  version=$(project_version)-${FLINK_MINOR_VERSION}
+  version=${project_version}-${FLINK_MINOR_VERSION}
 
   echo "Deploying jars v${version} to repository.apache.org"
   echo "To revert this step, login to 'https://repository.apache.org' -> 'Staging repositories' -> Select repository -> 'Drop'"
