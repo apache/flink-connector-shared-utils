@@ -32,6 +32,10 @@ function create_release_tag {
   cd "${SOURCE_DIR}"
 
   version=$(get_pom_version)
+  if [[ ${version} =~ -SNAPSHOT$ ]]; then
+    echo "Tags should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
+    exit 1
+  fi
 
   tag=v${version}
   if [ "$RC_NUM" != "none" ]; then

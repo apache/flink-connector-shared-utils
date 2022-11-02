@@ -35,6 +35,10 @@ function create_source_release {
 
   project=${PWD##*/}
   version=$(get_pom_version)
+  if [[ ${version} =~ -SNAPSHOT$ ]]; then
+    echo "Source releases should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
+    exit 1
+  fi
 
   echo "Creating source release v${version}"
   echo "To revert this step, run 'rm ${ARTIFACTS_DIR}'"
