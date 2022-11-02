@@ -21,7 +21,7 @@ This should be run once at the start of the release process.
 
 Creates (and pushes!) a new snapshot branch for the current commit.  
 The branch name is automatically determined from the version in the pom.  
-This script should be called when work on a new major/minor version has started.
+This script should be called when work on a new major/minor version of the connector has started.
 
 ## update_branch_version.sh
 
