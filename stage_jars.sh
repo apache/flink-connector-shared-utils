@@ -50,6 +50,7 @@ function deploy_staging_jars {
   options="-Prelease,docs-and-source -DskipTests -DretryFailedDeploymentCount=10"
   ${MVN} clean deploy ${options} -Dflink.version=${FLINK_VERSION}
 
+  cd "${RELEASE_DIR}"
   rm -rf "${clone_dir}"
 }
 
