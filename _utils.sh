@@ -32,6 +32,8 @@ function create_pristine_source {
 
   clone_dir="${release_dir}/tmp-clone"
   clean_dir="${release_dir}/tmp-clean-clone"
+  rm -rf ${clone_dir}
+  rm -rf ${clean_dir}
   # create a temporary git clone to ensure that we have a pristine source release
   git clone "${source_dir}" "${clone_dir}"
 
