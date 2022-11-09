@@ -24,7 +24,7 @@ source "${SCRIPT_DIR}/_utils.sh"
 
 ##########################
 
-check_variable_set NEW_VERSION
+check_variables_set NEW_VERSION
 
 ###########################
 

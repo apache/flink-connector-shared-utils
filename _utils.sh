@@ -17,12 +17,19 @@
 # limitations under the License.
 #
 
-function check_variable_set {
-  variable=$1
+function check_variables_set {
+  any_missing=false
 
-  if [ -z "${!variable:-}" ]; then
+  for variable in "$@"
+  do
+    if [ -z "${!variable:-}" ]; then
       echo "${variable} was not set."
-      exit 1
+      any_missing=true
+    fi
+  done
+
+  if [ ${any_missing} == true ]; then
+    exit 1
   fi
 }
 

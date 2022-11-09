@@ -24,7 +24,7 @@ source "${SCRIPT_DIR}/_utils.sh"
 
 ###########################
 
-check_variable_set RC_NUM
+check_variables_set RC_NUM
 
 ###########################
 
