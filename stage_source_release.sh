@@ -63,14 +63,14 @@ function deploy_source_release {
   release=${project}-${version}
 
   echo "Deploying source release v${version}"
-  echo "To revert this step, run 'svn delete https://dist.apache.org/repos/dist/dev/flink/${release}'"
+  echo "To revert this step, run 'svn delete ${SVN_DEV_DIR}/${release}'"
 
   svn_dir=${RELEASE_DIR}/svn
   rm -rf ${svn_dir}
   mkdir -p ${svn_dir}
   cd ${svn_dir}
 
-  svn checkout https://dist.apache.org/repos/dist/dev/flink --depth=immediates
+  svn checkout ${SVN_DEV_DIR} --depth=immediates
   cd flink
   mkdir ${release}
   mv ${ARTIFACTS_DIR}/* ${release}

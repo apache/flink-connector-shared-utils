@@ -43,3 +43,6 @@ REMOTE=${REMOTE:-upstream}
 SOURCE_DIR=$( cd -- "$( dirname -- "${SCRIPT_DIR}/../../../.." )" &> /dev/null && pwd )
 RELEASE_DIR=${SOURCE_DIR}/tools/releasing/release
 ARTIFACTS_DIR=${SOURCE_DIR}/tools/releasing/release/artifacts
+
+SVN_DEV_DIR="https://dist.apache.org/repos/dist/dev/flink"
+SVN_RELEASE_DIR="https://dist.apache.org/repos/dist/release/flink"
