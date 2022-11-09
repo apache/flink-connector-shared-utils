@@ -56,17 +56,17 @@ additionally be called on the `main` branch.
 
 # Common workflow
 
-1. run `publish_snapshot_branch.sh`
+1. run `release_snapshot_branch.sh`
 2. do some development work on the created snapshot branch
 3. checkout a specific commit to create a release from
 4. run `check_environment.sh`
 5. run `update_branch_version.sh`
 6. run `stage_source_release.sh`
 7. run `stage_jars.sh` (once for each supported Flink version)
-8. run `publish_git_tag.sh` (with `RC_NUM`)
+8. run `release_git_tag.sh` (with `RC_NUM`)
 9. vote on release
 10. finalize release or cancel and go back to step 2
-11. run `publish_git_tag.sh` (without `RC_NUM`)
+11. run `release_git_tag.sh` (without `RC_NUM`)
 12. run `update_japicmp_configuration.sh` (on snapshot branch, and maybe `main`)
 
 # Script naming conventions
@@ -76,4 +76,4 @@ additionally be called on the `main` branch.
 | check   | Verifies conditions without making any changes.                        |
 | update  | Applies modifications locally to the current branch.                   |
 | stage   | Publishes an artifact to an intermediate location for voting purposes. |
-| publish | Releases an artifact to a user-facing location.                        |
+| release | Publishes an artifact to a user-facing location.                       |
