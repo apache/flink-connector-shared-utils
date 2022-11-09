@@ -41,6 +41,17 @@ The version will be suffixed with `-${FLINK_MINOR_VERSION}` to indicate the supp
 If a particular version of a connector supports multiple Flink versions then this script should be called multiple
 times.
 
+## release_source_release.sh
+
+Copies the source release from the [SVN release directory](https://dist.apache.org/repops/dist/dev/flink) to the
+[SVN release directory](https://dist.apache.org/repops/dist/release/flink) on [dist.apache.org](https://dist.apache.org).
+
+For safety purposes this script does not automatically determine the project and version from the current directory/branch/tag.
+
+```
+PROJECT=flink-connector-elasticsearch VERSION=3.0.0 RC_NUM=2 ./release_source_release.sh
+```
+
 ## publish_git_tag.sh
 
 Creates a release tag for the current branch and pushes it to GitHub.
@@ -66,8 +77,9 @@ additionally be called on the `main` branch.
 8. run `release_git_tag.sh` (with `RC_NUM`)
 9. vote on release
 10. finalize release or cancel and go back to step 2
-11. run `release_git_tag.sh` (without `RC_NUM`)
-12. run `update_japicmp_configuration.sh` (on snapshot branch, and maybe `main`)
+11. run `release_source_release.sh`
+12. run `release_git_tag.sh` (without `RC_NUM`)
+13. run `update_japicmp_configuration.sh` (on snapshot branch, and maybe `main`)
 
 # Script naming conventions
 
