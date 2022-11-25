@@ -35,7 +35,7 @@ function update_branch_version {
 
   git commit -am "Update version to $NEW_VERSION"
 
-  echo "Done. Don't forget to push the change."
+  echo "Done."
 }
 
 (update_branch_version)
