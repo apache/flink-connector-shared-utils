@@ -17,7 +17,7 @@ script.
 Runs some pre-release checks for the current environment, for example that all required programs are available.  
 This should be run once at the start of the release process.
 
-## publish_snapshot_branch.sh
+## release_snapshot_branch.sh
 
 Creates (and pushes!) a new snapshot branch for the current commit.  
 The branch name is automatically determined from the version in the pom.  
@@ -52,7 +52,7 @@ For safety purposes this script does not automatically determine the project and
 PROJECT=flink-connector-elasticsearch VERSION=3.0.0 RC_NUM=2 ./release_source_release.sh
 ```
 
-## publish_git_tag.sh
+## release_git_tag.sh
 
 Creates a release tag for the current branch and pushes it to GitHub.
 The tag will be suffixed with `-rc${RC_NUM}`, if `${RC_NUM}` was set.  
