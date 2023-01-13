@@ -20,11 +20,11 @@ under the License.
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache</groupId>
+        <groupId>org.apache.flink</groupId>
         <artifactId>apache</artifactId>
         <version>20</version>
+    </parent>
 
-    </parent>org.apache.flink</groupId>
     <artifactId>flink-connector-parent</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
