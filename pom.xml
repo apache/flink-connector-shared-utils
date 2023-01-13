@@ -20,7 +20,7 @@ under the License.
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.flink</groupId>
+        <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
         <version>20</version>
     </parent>
