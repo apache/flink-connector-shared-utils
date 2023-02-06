@@ -20,16 +20,16 @@ on:
   workflow_call:
     inputs:
       flink_url:
-        description: "Url to Flink binary."
-        required: true
+        description: "Url to Flink binary. If not set the URL is inferred from the version parameter."
+        required: false
         type: string
       flink_version:
         description: "Flink version to test against."
         required: true
         type: string
       cache_flink_binary:
-        description: "Whether to cache the Flink binary. Should be false for SNAPSHOT URLs, true otherwise."
-        required: true
+        description: "Whether to cache the Flink binary. If not set this parameter is inferred from the version parameter. Must be set if 'flink_url' is used."
+        required: false
         type: boolean
       timeout_global:
         description: "The timeout in minutes for the entire workflow."
@@ -73,6 +73,30 @@ jobs:
         with:
           maven-version: 3.8.6
 
+      - name: "Determine Flink binary url"
+        run: |
+          binary_url=${{ inputs.flink_url }}
+          cache_binary=${{ inputs.cache_flink_binary }}
+          if [ "$binary_url" = "" ]; then
+            if [[ "${{ inputs.flink_version }}" = *-SNAPSHOT ]]; then
+              binary_url=https://s3.amazonaws.com/flink-nightly/flink-${{ inputs.flink_version }}-bin-scala_2.12.tgz
+              cache_binary=false
+            else
+              binary_url=https://dist.apache.org/repos/dist/release/flink/flink-${{ inputs.flink_version }}/flink-${{ inputs.flink_version }}-bin-scala_2.12.tgz
+              cache_binary=true
+            fi
+          else
+            if [ "cache_binary" = "" ]; then
+              echo "'cache_flink_binary' must be set when manually specifying a 'flink_url'."
+              exit 1
+            fi
+          fi
+          echo "binary_url=$binary_url" >> ${GITHUB_ENV}
+          echo "cache_binary=$cache_binary" >> ${GITHUB_ENV}
+
+      - name: "Print Flink binary url / caching"
+        run: echo "${{ env.binary_url }} / caching=${{ env.cache_binary }}"
+
       - name: Create cache dirs
         run: mkdir -p ${{ env.FLINK_CACHE_DIR }}
 
@@ -82,12 +106,12 @@ jobs:
         id: restore-cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
-          key: ${{ inputs.flink_url }}
+          key: ${{ env.binary_url }}
 
       - name: Download Flink binary
         working-directory: ${{ env.FLINK_CACHE_DIR }}
         if: steps.restore-cache-flink.outputs.cache-hit != 'true'
-        run: wget -q -c ${{ inputs.flink_url }} -O - | tar -xz
+        run: wget -q -c ${{ env.binary_url }} -O - | tar -xz
 
       - name: Compile and test
         timeout-minutes: ${{ inputs.timeout_test }}
@@ -116,4 +140,4 @@ jobs:
         id: cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
-          key: ${{ inputs.flink_url }}
+          key: ${{ env.binary_url }}
