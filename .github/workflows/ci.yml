@@ -77,7 +77,7 @@ jobs:
         run: mkdir -p ${{ env.FLINK_CACHE_DIR }}
 
       - name: Restore cached Flink binary
-        if: ${{ inputs.cache_flink_binary == 'true' }}
+        if: ${{ inputs.cache_flink_binary }}
         uses: actions/cache/restore@v3
         id: restore-cache-flink
         with:
@@ -86,7 +86,7 @@ jobs:
 
       - name: Download Flink binary
         working-directory: ${{ env.FLINK_CACHE_DIR }}
-        if: steps.cache-flink.outputs.cache-hit != 'true'
+        if: steps.restore-cache-flink.outputs.cache-hit != 'true'
         run: wget -q -c ${{ inputs.flink_url }} -O - | tar -xz
 
       - name: Compile and test
@@ -111,7 +111,7 @@ jobs:
             -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties
 
       - name: Cache Flink binary
-        if: ${{ inputs.cache_flink_binary == 'true' }}
+        if: ${{ inputs.cache_flink_binary }}
         uses: actions/cache/save@v3
         id: cache-flink
         with:
