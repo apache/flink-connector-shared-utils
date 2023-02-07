@@ -86,7 +86,7 @@ jobs:
               cache_binary=true
             fi
           else
-            if [ "cache_binary" = "" ]; then
+            if [ "$cache_binary" = "" ]; then
               echo "'cache_flink_binary' must be set when manually specifying a 'flink_url'."
               exit 1
             fi
