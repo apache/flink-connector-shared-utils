@@ -35,7 +35,7 @@ on:
         description: "The timeout in minutes for the entire workflow."
         required: false
         type: number
-        default: 60
+        default: 80
       timeout_test:
         description: "The timeout in minutes for the test compile&step."
         required: false
