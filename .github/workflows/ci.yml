@@ -82,7 +82,7 @@ jobs:
               binary_url=https://s3.amazonaws.com/flink-nightly/flink-${{ inputs.flink_version }}-bin-scala_2.12.tgz
               cache_binary=false
             else
-              binary_url=https://dist.apache.org/repos/dist/release/flink/flink-${{ inputs.flink_version }}/flink-${{ inputs.flink_version }}-bin-scala_2.12.tgz
+              binary_url=https://archive.apache.org/dist/flink/flink-${{ inputs.flink_version }}/flink-${{ inputs.flink_version }}-bin-scala_2.12.tgz
               cache_binary=true
             fi
           else
