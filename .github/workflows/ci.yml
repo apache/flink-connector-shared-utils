@@ -113,6 +113,14 @@ jobs:
         if: steps.restore-cache-flink.outputs.cache-hit != 'true'
         run: wget -q -c ${{ env.binary_url }} -O - | tar -xz
 
+      - name: Cache Flink binary
+        if: ${{ env.cache_binary }}
+        uses: actions/cache/save@v3
+        id: cache-flink
+        with:
+          path: ${{ env.FLINK_CACHE_DIR }}
+          key: ${{ env.binary_url }}
+
       - name: Compile and test
         timeout-minutes: ${{ inputs.timeout_test }}
         run: |
@@ -133,11 +141,3 @@ jobs:
             -Dexec.args="${{ env.MVN_BUILD_OUTPUT_FILE }} $(pwd) ${{ env.MVN_VALIDATION_DIR }}" \
             ${{ env.MVN_CONNECTION_OPTIONS }} \
             -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties
-
-      - name: Cache Flink binary
-        if: ${{ env.cache_binary }}
-        uses: actions/cache/save@v3
-        id: cache-flink
-        with:
-          path: ${{ env.FLINK_CACHE_DIR }}
-          key: ${{ env.binary_url }}
