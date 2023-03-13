@@ -41,6 +41,11 @@ on:
         required: false
         type: number
         default: 50
+      run_dependency_convergence:
+        description: "Whether to run the dependency convergence check"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   compile_and_test:
@@ -72,6 +77,10 @@ jobs:
         uses: stCarolas/setup-maven@v4.2
         with:
           maven-version: 3.8.6
+
+      - name: "Enable dependency convergence check"
+        if: ${{ inputs.run_dependency_convergence }}
+        run: echo "MVN_DEPENDENCY_CONVERGENCE=-Dflink.convergence.phase=install -Pcheck-convergence" >> $GITHUB_ENV
 
       - name: "Determine Flink binary url"
         run: |
@@ -130,7 +139,7 @@ jobs:
             -DaltDeploymentRepository=validation_repository::default::file:${{ env.MVN_VALIDATION_DIR }} \
             -Dscala-2.12 \
             -Prun-end-to-end-tests -DdistDir=${{ env.FLINK_CACHE_DIR }}/flink-${{ inputs.flink_version }} \
-            -Dflink.convergence.phase=install -Pcheck-convergence \
+            ${{ env.MVN_DEPENDENCY_CONVERGENCE }} \
             ${{ env.MVN_CONNECTION_OPTIONS }} \
             -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties \
             | tee ${{ env.MVN_BUILD_OUTPUT_FILE }}
