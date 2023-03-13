@@ -41,6 +41,11 @@ on:
         required: false
         type: number
         default: 50
+      skip_dependency_convergence:
+        description: "Whether to skip the dependency convergence check"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   compile_and_test:
@@ -51,6 +56,7 @@ jobs:
     timeout-minutes: ${{ inputs.timeout_global }}
     env:
       MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }}
+      MVN_DEPENDENCY_CONVERGENCE: -Dflink.convergence.phase=install -Pcheck-convergence
       MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
       FLINK_CACHE_DIR: "/tmp/cache/flink"
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
@@ -72,6 +78,14 @@ jobs:
         uses: stCarolas/setup-maven@v4.2
         with:
           maven-version: 3.8.6
+
+      - name: "Determine if dependency convergence should be skipped"
+        run: |
+          skip_dependency_convergence=${{ inputs.skip_dependency_convergence }}
+          if [ "skip_dependency_convergence" = "true" ]; then
+            echo "Skipping dependency convergence check"
+            echo "MVN_DEPENDENCY_CONVERGENCE=" >> $GITHUB_ENV
+          fi
 
       - name: "Determine Flink binary url"
         run: |
@@ -122,7 +136,7 @@ jobs:
             -DaltDeploymentRepository=validation_repository::default::file:${{ env.MVN_VALIDATION_DIR }} \
             -Dscala-2.12 \
             -Prun-end-to-end-tests -DdistDir=${{ env.FLINK_CACHE_DIR }}/flink-${{ inputs.flink_version }} \
-            -Dflink.convergence.phase=install -Pcheck-convergence \
+            ${{ env.MVN_DEPENDENCY_CONVERGENCE }} \
             ${{ env.MVN_CONNECTION_OPTIONS }} \
             -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties \
             | tee ${{ env.MVN_BUILD_OUTPUT_FILE }}
