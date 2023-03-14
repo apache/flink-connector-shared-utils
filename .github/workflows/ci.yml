@@ -110,7 +110,7 @@ jobs:
         run: mkdir -p ${{ env.FLINK_CACHE_DIR }}
 
       - name: Restore cached Flink binary
-        if: ${{ env.cache_binary }}
+        if: ${{ env.cache_binary == 'true' }}
         uses: actions/cache/restore@v3
         id: restore-cache-flink
         with:
@@ -123,7 +123,7 @@ jobs:
         run: wget -q -c ${{ env.binary_url }} -O - | tar -xz
 
       - name: Cache Flink binary
-        if: ${{ env.cache_binary }}
+        if: ${{ env.cache_binary == 'true' }}
         uses: actions/cache/save@v3
         id: cache-flink
         with:
