@@ -33,7 +33,7 @@ function create_source_release {
   mkdir -p ${RELEASE_DIR}
   mkdir -p ${ARTIFACTS_DIR}
 
-  project=${PWD##*/}
+  project=${PROJECT:-PWD##*/}
   version=$(get_pom_version)
   if [[ ${version} =~ -SNAPSHOT$ ]]; then
     echo "Source releases should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
@@ -57,7 +57,7 @@ function create_source_release {
 
 function deploy_source_release {
   cd ${SOURCE_DIR}
-  project=${PWD##*/}
+  project=${PROJECT:-PWD##*/}
   version=$(get_pom_version)-rc${RC_NUM}
 
   release=${project}-${version}
