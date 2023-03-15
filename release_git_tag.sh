@@ -42,7 +42,7 @@ function create_release_tag {
     tag=${tag}-rc${RC_NUM}
   fi
 
-  git tag -s -m "v${tag}" ${tag}
+  git tag -s -m "${tag}" ${tag}
 
   git push ${REMOTE} ${tag}
 }
