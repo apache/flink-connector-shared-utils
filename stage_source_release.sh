@@ -63,7 +63,7 @@ function deploy_source_release {
   release=${project}-${version}
 
   echo "Deploying source release v${version}"
-  echo "To revert this step, run 'svn delete ${SVN_DEV_DIR}/${release}'"
+  echo "To revert this step, run 'svn delete ${SVN_DEV_DIR}/${release} --message \"[Revert] Delete ${SVN_DEV_DIR}/${release}\"'"
 
   svn_dir=${RELEASE_DIR}/svn
   rm -rf ${svn_dir}
