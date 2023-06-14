@@ -152,7 +152,7 @@ jobs:
             -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties
 
       - name: Print JVM thread dumps when cancelled
-        if: ${{ cancelled() }} || ${{ failure() }}
+        if: ${{ failure() }}
         run: |
           # ----------------------------------------------------------------------------
           # Copyright 2023 The Netty Project
