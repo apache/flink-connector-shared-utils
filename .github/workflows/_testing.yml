@@ -26,12 +26,32 @@ jobs:
     uses: ./.github/workflows/ci.yml
     with:
       flink_version: 1.16.1
+      connector_branch: ci_utils
   snapshot-version:
     uses: ./.github/workflows/ci.yml
     with:
       flink_version: 1.16-SNAPSHOT
+      connector_branch: ci_utils
   disable-convergence:
     uses: ./.github/workflows/ci.yml
     with:
       flink_version: 1.16.1
+      connector_branch: ci_utils
       run_dependency_convergence: false
+  multiple-branches:
+    strategy:
+      matrix:
+        flink_branches: [{
+          flink: 1.16.1,
+          branch: ci_utils
+        }, {
+          flink: 1.17.1,
+          branch: ci_utils
+        }, {
+          flink: 1.16.1,
+          branch: test_project
+        }]
+    uses: ./.github/workflows/ci.yml
+    with:
+      flink_version: ${{ matrix.flink_branches.flink }}
+      connector_branch: ${{ matrix.flink_branches.branch }}
