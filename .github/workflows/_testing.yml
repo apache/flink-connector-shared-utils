@@ -42,13 +42,15 @@ jobs:
     strategy:
       matrix:
         flink_branches: [{
-          flink: 1.16.1,
-          branch: ci_utils
+          flink: 1.16.1
+#          By not specifying a branch, it should default to the branch that triggers this workflow
         }, {
           flink: 1.17.1,
+#          By specifying this branch, it should check out this specified branch
           branch: ci_utils
         }, {
           flink: 1.16.1,
+#          By specifying a different branch then on L49, it should check out this specified branch
           branch: test_project
         }]
     uses: ./.github/workflows/ci.yml
