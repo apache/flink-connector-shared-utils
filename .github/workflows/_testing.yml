@@ -25,13 +25,28 @@ jobs:
   specific-version:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.16.1
+      flink_version: 1.17.1
       connector_branch: ci_utils
-  snapshot-version:
+  # we can test connectors against flink snapshots but enable archunit tests only when tested against
+  # the flink version used for the connector build.
+  snapshot-without-archunit-tests:
     uses: ./.github/workflows/ci.yml
     with:
       flink_version: 1.16-SNAPSHOT
-      connector_branch: ci_utils
+      skip_archunit_tests: true
+  # we need to test the connectors against last 2 flink major versions.
+  # let's say the connector under test was built against flink 1.17.1, disable the archunit tests when tested against 1.16.2
+  non-main-version-without-archunit-tests:
+    uses: ./.github/workflows/ci.yml
+    with:
+      flink_version: 1.16.2
+      skip_archunit_tests: true
+  # we need to test the connectors against last 2 flink major versions.
+  # let's say the connector under test was built against flink 1.17.1, leave the archunit tests enabled when tested against 1.17.1
+  main-version-with-archunit-tests:
+    uses: ./.github/workflows/ci.yml
+    with:
+      flink_version: 1.17.1
   flink118-java17-version:
     uses: ./.github/workflows/ci.yml
     with:
