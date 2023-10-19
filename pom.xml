@@ -33,8 +33,7 @@ under the License.
 	<packaging>jar</packaging>
 
 	<properties>
-		<commons-compress.version>1.23.0</commons-compress.version>
-		<flink.version>1.16.1</flink.version>
+		<flink.version>1.18-SNAPSHOT</flink.version>
 		<japicmp.referenceVersion>1.16.0</japicmp.referenceVersion>
 	</properties>
 
@@ -43,21 +42,18 @@ under the License.
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-core</artifactId>
 			<version>${flink.version}</version>
-			<!--
-			Exclude since from testcontainers it comes newer (1.23.0) version
-			-->
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-compress</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-test-utils-junit</artifactId>
 			<version>${flink.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-compress</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
