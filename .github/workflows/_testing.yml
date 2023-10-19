@@ -49,6 +49,11 @@ jobs:
 #          By specifying this branch, it should check out this specified branch
           branch: ci_utils
         }, {
+#          JAva 17 supported since 1.18, should be replaced with 1.18.0, once it is released
+          flink: 1.18-SNAPSHOT,
+          jdk: 17,
+          branch: ci_utils
+        }, {
           flink: 1.16.1,
 #          By specifying a different branch then on L49, it should check out this specified branch
           branch: test_project
@@ -57,3 +62,4 @@ jobs:
     with:
       flink_version: ${{ matrix.flink_branches.flink }}
       connector_branch: ${{ matrix.flink_branches.branch }}
+      jdk_version: ${{ matrix.flink_branches.jdk }}
