@@ -43,19 +43,21 @@ under the License.
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-core</artifactId>
 			<version>${flink.version}</version>
+			<!--
+			Exclude since from testcontainers it comes newer (1.23.0) version
+			-->
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-compress</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-test-utils-junit</artifactId>
 			<version>${flink.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- For dependency convergence -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-			<version>${commons-compress.version}</version>
 		</dependency>
 	</dependencies>
 
