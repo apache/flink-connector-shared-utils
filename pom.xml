@@ -33,6 +33,7 @@ under the License.
 	<packaging>jar</packaging>
 
 	<properties>
+		<commons-compress.version>1.23.0</commons-compress.version>
 		<flink.version>1.16.1</flink.version>
 		<japicmp.referenceVersion>1.16.0</japicmp.referenceVersion>
 	</properties>
@@ -48,6 +49,13 @@ under the License.
 			<artifactId>flink-test-utils-junit</artifactId>
 			<version>${flink.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- For dependency convergence -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>${commons-compress.version}</version>
 		</dependency>
 	</dependencies>
 
