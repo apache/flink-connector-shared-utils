@@ -32,9 +32,10 @@ jobs:
     with:
       flink_version: 1.16-SNAPSHOT
       connector_branch: ci_utils
-  snapshot18-version:
+  flink118-java17-version:
     uses: ./.github/workflows/ci.yml
     with:
+#     This should be replaced with 1.18.0 once it is released
       flink_version: 1.18-SNAPSHOT
       jdk_version: 17
       connector_branch: ci_utils
