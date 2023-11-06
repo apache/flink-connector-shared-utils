@@ -108,7 +108,7 @@ jobs:
 
       - name: "Disable archunit tests"
         if: ${{ inputs.skip_archunit_tests }}
-        run: echo "MVN_ARCHUNIT_TESTS=-Dtest='!*ArchitectureTest'" >> $GITHUB_ENV
+        run: echo "MVN_ARCHUNIT_TESTS=-DadditionalExcludes=**/*ArchitectureTest.java" >> $GITHUB_ENV
 
       - name: "Determine Flink binary url"
         run: |
