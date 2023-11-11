@@ -35,8 +35,7 @@ jobs:
   flink118-java17-version:
     uses: ./.github/workflows/ci.yml
     with:
-#     This should be replaced with 1.18.0 once it is released
-      flink_version: 1.18-SNAPSHOT
+      flink_version: 1.18.0
       jdk_version: 17
       connector_branch: ci_utils
       run_dependency_convergence: false
