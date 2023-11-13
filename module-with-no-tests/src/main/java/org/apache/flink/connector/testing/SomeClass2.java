@@ -18,14 +18,8 @@
 
 package org.apache.flink.connector.testing;
 
-import static org.apache.flink.util.Preconditions.checkNotNull;
-
 /** A dummy class; only exists so that the compile/packaging plugins have something to do. */
-public class SomeClass {
-    public static void main(String[] args) {
-        // this call is an intended (for testing) violation of the
-        // ConnectorRules#CONNECTOR_CLASSES_ONLY_DEPEND_ON_PUBLIC_API archunit rule that was fixed
-        // in Flink 1.18
-        checkNotNull(new Object());
-    }
+public class SomeClass2 {
+
+    public static void main(String[] args) {}
 }

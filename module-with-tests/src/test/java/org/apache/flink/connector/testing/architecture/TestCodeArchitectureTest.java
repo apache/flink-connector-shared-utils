@@ -28,12 +28,7 @@ import com.tngtech.archunit.junit.ArchTests;
 
 /** Architecture tests for test code. */
 @AnalyzeClasses(
-        packages = {
-            "org.apache.flink.batch.connectors.cassandra",
-            "org.apache.flink.streaming.connectors.cassandra",
-            "org.apache.flink.connector.cassandra",
-            "org.apache.flink.connectors.cassandra"
-        },
+        packages = {"org.apache.flink.connector.testing"},
         importOptions = {
             ImportOption.OnlyIncludeTests.class,
             ImportOptions.ExcludeScalaImportOption.class,

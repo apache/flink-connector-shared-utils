@@ -4,9 +4,6 @@ scalastyle-output.xml
 .classpath
 .idea
 !.idea/vcs.xml
-.metadata
-module-with-no-tests/.metadata
-module-with-tests/.metadata
 .settings
 .project
 .version.properties
@@ -34,7 +31,3 @@ out/
 /docs/.jekyll-metadata
 *.ipr
 *.iws
-tools/flink
-tools/flink-*
-tools/releasing/release
-tools/japicmp-output
