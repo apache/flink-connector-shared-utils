@@ -58,7 +58,9 @@ function create_pristine_source {
 }
 
 function get_pom_version {
+  set +u
   echo $(${MVN} help:evaluate -Dexpression="project.version" -q -DforceStdout)
+  set -u
 }
 
 function set_pom_version {

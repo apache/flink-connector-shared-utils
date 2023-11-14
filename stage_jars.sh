@@ -48,7 +48,9 @@ function deploy_staging_jars {
   set_pom_version "${version}"
 
   options="-Prelease,docs-and-source -DskipTests -DretryFailedDeploymentCount=10"
+  set +u
   ${MVN} clean deploy ${options} -Dflink.version=${FLINK_VERSION}
+  set -u
 
   cd "${RELEASE_DIR}"
   rm -rf "${clone_dir}"

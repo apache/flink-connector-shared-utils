@@ -26,7 +26,9 @@ source "${SCRIPT_DIR}/_init.sh"
 function create_snapshot_branch {
   cd "${SOURCE_DIR}"
 
+  set +u
   version=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout | sed "s/-SNAPSHOT//")
+  set -u
   branch="v${version}"
 
   git checkout -b ${branch}
