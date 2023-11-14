@@ -27,7 +27,7 @@ under the License.
 
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-connector-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
 
     <url>https://flink.apache.org</url>
@@ -80,6 +80,10 @@ under the License.
         <japicmp.referenceVersion/>
         <flink.version/>
         <flink.parent.artifactId/>
+
+        <!-- optional property to add exclusions to surefire tests
+        (among other things for skipping archunit tests) -->
+        <additionalExcludes/>
     </properties>
 
     <build>
@@ -570,6 +574,9 @@ under the License.
                                 <includes>
                                     <include>${test.unit.pattern}</include>
                                 </includes>
+                                <excludes>
+                                    <exclude>${additionalExcludes}</exclude>
+                                </excludes>
                                 <forkCount>${flink.forkCountUnitTest}</forkCount>
                                 <argLine>${flink.surefire.baseArgLine} -Xmx${flink.XmxUnitTest}</argLine>
                             </configuration>
@@ -587,6 +594,7 @@ under the License.
                                 </includes>
                                 <excludes>
                                     <exclude>${test.unit.pattern}</exclude>
+                                    <exclude>${additionalExcludes}</exclude>
                                 </excludes>
                                 <forkCount>${flink.forkCountITCase}</forkCount>
                                 <argLine>${flink.surefire.baseArgLine} -Xmx${flink.XmxITCase}</argLine>
