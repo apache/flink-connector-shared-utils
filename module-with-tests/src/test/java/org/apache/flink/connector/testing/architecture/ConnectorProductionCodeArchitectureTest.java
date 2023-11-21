@@ -18,25 +18,30 @@
 
 package org.apache.flink.connector.testing.architecture;
 
-import org.apache.flink.architecture.ProductionCodeArchitectureBase;
-import org.apache.flink.architecture.common.ImportOptions;
-
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
-import com.tngtech.archunit.junit.ArchTests;
+import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.library.freeze.FreezingArchRule;
 
-/** product code Architecture tests. */
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+
+/** production code Architecture tests. */
 @AnalyzeClasses(
-        packages = "org.apache.flink.connector",
+        packages = "org.apache.flink.connector.testing",
         importOptions = {
             ImportOption.DoNotIncludeTests.class,
-            ImportOption.DoNotIncludeArchives.class,
-            ImportOptions.ExcludeScalaImportOption.class,
-            ImportOptions.ExcludeShadedImportOption.class
+            ImportOption.DoNotIncludeArchives.class
         })
-public class ProductionCodeArchitectureTest {
+public class ConnectorProductionCodeArchitectureTest {
 
     @ArchTest
-    public static final ArchTests COMMON_TESTS = ArchTests.in(ProductionCodeArchitectureBase.class);
+    // simple test rule that is not violated
+    public static final ArchRule SIMPLE_RULE =
+            FreezingArchRule.freeze(
+                    classes()
+                            .that()
+                            .resideInAPackage("org.apache.flink.connector..")
+                            .should()
+                            .haveSimpleNameContaining("Connector"));
 }

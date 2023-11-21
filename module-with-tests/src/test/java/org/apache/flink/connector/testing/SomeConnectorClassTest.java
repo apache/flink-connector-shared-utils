@@ -18,7 +18,10 @@
 
 package org.apache.flink.connector.testing;
 
-/** A dummy class; only exists so that the compile/packaging plugins have something to do. */
-public class SomeClass {
-    public static void main(String[] args) {}
+import org.junit.jupiter.api.Test;
+
+class SomeConnectorClassTest {
+
+    @Test
+    void someTest() {}
 }

@@ -19,7 +19,4 @@
 package org.apache.flink.connector.testing;
 
 /** A dummy class; only exists so that the compile/packaging plugins have something to do. */
-public class SomeClass2 {
-
-    public static void main(String[] args) {}
-}
+public class SomeConnectorClass {}
