@@ -24,6 +24,7 @@ under the License.
 		<artifactId>flink-connector-parent</artifactId>
 		<version>1.0.0</version>
 	</parent>
+
 	<modules>
 		<module>module-with-no-tests</module>
 		<module>module-with-tests</module>
@@ -39,6 +40,8 @@ under the License.
 	<properties>
 		<flink.version>1.17.1</flink.version>
 		<japicmp.referenceVersion>1.16.0</japicmp.referenceVersion>
+		<archunit.version>1.0.0</archunit.version>
+		<slf4j.version>1.7.36</slf4j.version>
 	</properties>
 
 	<dependencies>
@@ -47,55 +50,45 @@ under the License.
 			<artifactId>flink-core</artifactId>
 			<version>${flink.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-test-utils-junit</artifactId>
-			<version>${flink.version}</version>
-			<scope>test</scope>
-			<!-- for dependency convergence -->
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-compress</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- ArchUit test dependencies -->
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-architecture-tests-test</artifactId>
-			<version>${flink.version}</version>
-			<scope>test</scope>
-			<!-- for dependency convergence -->
-			<exclusions>
-				<exclusion>
-					<groupId>com.esotericsoftware.kryo</groupId>
-					<artifactId>kryo</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.junit.platform</groupId>
-					<artifactId>junit-platform-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-architecture-tests-production</artifactId>
-			<version>${flink.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.36</version>
+				<version>${slf4j.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.apache.flink</groupId>
+				<artifactId>flink-test-utils-junit</artifactId>
+				<version>${flink.version}</version>
+				<scope>test</scope>
+				<!-- for dependency convergence -->
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.commons</groupId>
+						<artifactId>commons-compress</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>com.tngtech.archunit</groupId>
+				<artifactId>archunit</artifactId>
+				<version>${archunit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.tngtech.archunit</groupId>
+				<artifactId>archunit-junit5</artifactId>
+				<version>${archunit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
