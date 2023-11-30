@@ -1,0 +1,86 @@
+################################################################################
+#  Licensed to the Apache Software Foundation (ASF) under one
+#  or more contributor license agreements.  See the NOTICE file
+#  distributed with this work for additional information
+#  regarding copyright ownership.  The ASF licenses this file
+#  to you under the Apache License, Version 2.0 (the
+#  "License"); you may not use this file except in compliance
+#  with the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+# limitations under the License.
+################################################################################
+
+on:
+  workflow_call:
+    inputs:
+      flink_version:
+        description: "Flink version to test against."
+        required: true
+        type: string
+      timeout_global:
+        description: "The timeout in minutes for the entire workflow."
+        required: false
+        type: number
+        default: 80
+      timeout_test:
+        description: "The timeout in minutes for the test compile&step."
+        required: false
+        type: number
+        default: 50
+      connector_branch:
+        description: "Branch that need to be checked out"
+        required: false
+        type: string
+
+jobs:
+  python_test:
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.timeout_global }}
+    env:
+      MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }} -DskipTests
+      MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+      MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
+    steps:
+      - run: echo "Running CI pipeline for JDK version 8"
+
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          ref: "${{ inputs.connector_branch }}"
+
+      - name: Set JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Set Maven 3.8.6
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.6
+
+      - name: Compile
+        timeout-minutes: ${{ inputs.timeout_test }}
+        run: |
+          set -o pipefail
+
+          mvn clean install ${MVN_COMMON_OPTIONS} \
+            ${{ env.MVN_CONNECTION_OPTIONS }} \
+            -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties \
+            | tee ${{ env.MVN_BUILD_OUTPUT_FILE }}
+
+      - name: Run Python test
+        timeout-minutes: ${{ inputs.timeout_test }}
+        run: |
+          set -o pipefail
+
+          cd flink-python
+          chmod a+x dev/* 
+          ./dev/lint-python.sh -e mypy,sphinx | tee ${{ env.MVN_BUILD_OUTPUT_FILE }}
