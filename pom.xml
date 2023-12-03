@@ -563,8 +563,6 @@ under the License.
                             <user.country>US</user.country>
                             <user.language>en</user.language>
                             <project.basedir>${project.basedir}</project.basedir>
-                            <!-- Expose as property so that test utils that spawn JVMs can pick it up. -->
-                            <surefire.module.config>${surefire.module.config}</surefire.module.config>
                             <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
                         </systemPropertyVariables>
                         <argLine>-Xms256m -Xmx2048m -XX:+UseG1GC</argLine>
