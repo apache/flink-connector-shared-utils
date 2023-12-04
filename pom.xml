@@ -71,7 +71,7 @@ under the License.
              to the jvm (-Xmx) and the available memory on the machine running the test -->
         <flink.forkCountITCase>2</flink.forkCountITCase>
         <flink.forkCountUnitTest>4</flink.forkCountUnitTest>
-        <flink.surefire.baseArgLine>-XX:+UseG1GC -Xms256m</flink.surefire.baseArgLine>
+        <flink.surefire.baseArgLine>-XX:+UseG1GC -Xms256m -XX:+IgnoreUnrecognizedVMOptions ${surefire.module.config}</flink.surefire.baseArgLine>
 
         <flink.convergence.phase>validate</flink.convergence.phase>
         <japicmp.outputDir>tools/japicmp-output</japicmp.outputDir>
@@ -84,6 +84,11 @@ under the License.
         <!-- optional property to add exclusions to surefire tests
         (among other things for skipping archunit tests) -->
         <additionalExcludes/>
+        <!-- This property should contain the add-opens/add-exports commands required
+        for the connector tests in the given connector's module to pass.
+        It MUST be a space-separated list not containing any newlines,
+        of entries in the form '[-]{2}add-[opens|exports]=<module>/<package>=ALL-UNNAMED'.-->
+        <surefire.module.config/>
     </properties>
 
     <build>
