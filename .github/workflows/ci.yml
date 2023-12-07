@@ -55,6 +55,11 @@ on:
         description: "Branch that need to be checked out"
         required: false
         type: string
+      optional_maven_profiles:
+        description: "Optional maven profiles."
+        default: non_existing_profile
+        required: false
+        type: string
 
 jobs:
   compile_and_test:
@@ -64,7 +69,7 @@ jobs:
         jdk: ${{ fromJSON(format('[{0}]', inputs.jdk_version)) }}
     timeout-minutes: ${{ inputs.timeout_global }}
     env:
-      MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }}
+      MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }} -P ${{ inputs.optional_maven_profiles }}
       MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
       FLINK_CACHE_DIR: "/tmp/cache/flink"
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
