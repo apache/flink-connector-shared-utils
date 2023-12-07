@@ -437,7 +437,7 @@ under the License.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.5.1</version>
                     <configuration>
                         <!-- This section contains the core configuration that is applied to every jar that we create.-->
                         <filters combine.children="append">
@@ -877,11 +877,6 @@ under the License.
             <build>
                 <pluginManagement>
                     <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-shade-plugin</artifactId>
-                            <version>3.2.4</version>
-                        </plugin>
                         <plugin>
                             <groupId>io.github.zentol.japicmp</groupId>
                             <artifactId>japicmp-maven-plugin</artifactId>
