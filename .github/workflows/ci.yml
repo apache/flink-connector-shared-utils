@@ -55,6 +55,10 @@ on:
         description: "Branch that need to be checked out"
         required: false
         type: string
+      optional_maven_profiles:
+        description: "Optional maven profiles."
+        required: false
+        type: string
 
 jobs:
   compile_and_test:
@@ -92,6 +96,10 @@ jobs:
       - name: "Enable dependency convergence check"
         if: ${{ inputs.run_dependency_convergence }}
         run: echo "MVN_DEPENDENCY_CONVERGENCE=-Dflink.convergence.phase=install -Pcheck-convergence" >> $GITHUB_ENV
+
+      - name: "Enable optional maven profiles"
+        if: ${{ inputs.optional_maven_profiles }}
+        run: echo "MVN_COMMON_OPTIONS=${MVN_COMMON_OPTIONS} -P ${{ inputs.optional_maven_profiles }}" >> $GITHUB_ENV
 
       - name: "Determine Flink binary url"
         run: |
