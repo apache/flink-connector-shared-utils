@@ -57,7 +57,6 @@ on:
         type: string
       optional_maven_profiles:
         description: "Optional maven profiles."
-        default: non_existing_profile
         required: false
         type: string
 
@@ -69,7 +68,7 @@ jobs:
         jdk: ${{ fromJSON(format('[{0}]', inputs.jdk_version)) }}
     timeout-minutes: ${{ inputs.timeout_global }}
     env:
-      MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }} -P ${{ inputs.optional_maven_profiles }}
+      MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }}
       MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
       FLINK_CACHE_DIR: "/tmp/cache/flink"
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
@@ -97,6 +96,10 @@ jobs:
       - name: "Enable dependency convergence check"
         if: ${{ inputs.run_dependency_convergence }}
         run: echo "MVN_DEPENDENCY_CONVERGENCE=-Dflink.convergence.phase=install -Pcheck-convergence" >> $GITHUB_ENV
+
+      - name: "Enable optional maven profiles"
+        if: ${{ inputs.optional_maven_profiles }}
+        run: echo "MVN_COMMON_OPTIONS=${MVN_COMMON_OPTIONS} -P ${{ inputs.optional_maven_profiles }}" >> $GITHUB_ENV
 
       - name: "Determine Flink binary url"
         run: |
