@@ -50,7 +50,8 @@ jobs:
     with:
       flink_version: 1.16-SNAPSHOT
       connector_branch: ci_utils
-      optional_maven_profiles: java11
+      jdk_version: 11
+      optional_maven_profiles: "java11,java11-target"
   multiple-branches:
     strategy:
       matrix:
