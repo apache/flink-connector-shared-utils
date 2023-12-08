@@ -32,6 +32,13 @@ jobs:
     with:
       flink_version: 1.16-SNAPSHOT
       connector_branch: ci_utils
+  flink118-java17-version:
+    uses: ./.github/workflows/ci.yml
+    with:
+      flink_version: 1.18.0
+      jdk_version: 17
+      connector_branch: ci_utils
+      run_dependency_convergence: false
   disable-convergence:
     uses: ./.github/workflows/ci.yml
     with:
