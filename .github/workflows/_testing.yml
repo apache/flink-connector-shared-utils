@@ -71,3 +71,17 @@ jobs:
     with:
       flink_version: ${{ matrix.flink_branches.flink }}
       connector_branch: ${{ matrix.flink_branches.branch }}
+
+  specific-version-python:
+    uses: ./.github/workflows/python_ci.yml
+    with:
+      flink_version: 1.16.1
+  snapshot-version-python:
+    uses: ./.github/workflows/python_ci.yml
+    with:
+      flink_version: 1.16-SNAPSHOT
+  flink118-java17-version-python:
+    uses: ./.github/workflows/python_ci.yml
+    with:
+      flink_version: 1.18.0
+      jdk_version: 17

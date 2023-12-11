@@ -23,6 +23,11 @@ on:
         description: "Flink version to test against."
         required: true
         type: string
+      jdk_version:
+        description: "Jdk version to test against."
+        required: false
+        default: 8, 11
+        type: string
       timeout_global:
         description: "The timeout in minutes for the entire workflow."
         required: false
@@ -41,6 +46,9 @@ on:
 jobs:
   python_test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk: ${{ fromJSON(format('[{0}]', inputs.jdk_version)) }}
     timeout-minutes: ${{ inputs.timeout_global }}
     env:
       MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }} -DskipTests
@@ -57,7 +65,7 @@ jobs:
       - name: Set JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 8
+          java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
           cache: 'maven'
 
