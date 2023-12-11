@@ -26,7 +26,7 @@ on:
       jdk_version:
         description: "Jdk version to test against."
         required: false
-        default: 8, 11
+        default: 8
         type: string
       timeout_global:
         description: "The timeout in minutes for the entire workflow."
