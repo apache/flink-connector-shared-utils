@@ -55,7 +55,7 @@ jobs:
       MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
     steps:
-      - run: echo "Running CI pipeline for JDK version 8"
+      - run: echo "Running CI pipeline for JDK version ${{ matrix.jdk }}"
 
       - name: Check out repository code
         uses: actions/checkout@v3
