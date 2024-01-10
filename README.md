@@ -31,7 +31,7 @@ Updates the version in the poms of the current branch to `${NEW_VERSION}`.
 
 Creates a source release from the current branch and pushes it via `svn`
 to [dist.apache.org](https://dist.apache.org/repos/dist/dev/flink).  
-The project name is automatically determined from the repository name, but can be overridden via `${PROJECT}`.
+The project name is automatically determined from the repository name, but can be overridden via `${project}`.
 The version is automatically determined from the version in the pom.  
 The created `svn` directory will contain a `-rc${RC_NUM}` suffix.
 
