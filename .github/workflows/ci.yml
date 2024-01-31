@@ -68,12 +68,12 @@ jobs:
       - run: echo "Running CI pipeline for JDK version ${{ matrix.jdk }}"
 
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: "${{ inputs.connector_branch }}"
 
       - name: Set JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
@@ -117,7 +117,7 @@ jobs:
 
       - name: Restore cached Flink binary
         if: ${{ env.cache_binary == 'true' }}
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         id: restore-cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
@@ -130,7 +130,7 @@ jobs:
 
       - name: Cache Flink binary
         if: ${{ env.cache_binary == 'true' }}
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         id: cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
