@@ -1,4 +1,4 @@
-[submodule "tools/release/shared"]
-	path = tools/release/shared
-	url = https://github.com/apache/flink-connector-shared-utils
+[submodule "tools/releasing/shared"]
+	path = tools/releasing/shared
+	url = https://github.com/apache/flink-connector-shared-utils.git
 	branch = release_utils
