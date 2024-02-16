@@ -49,7 +49,8 @@ function create_pristine_source {
     --exclude ".idea" --exclude "*.iml" \
     --exclude ".DS_Store" \
     --exclude ".asf.yaml" \
-    --exclude "target" --exclude "tools/releasing/shared" \
+    --exclude "target"  \
+    --exclude "tools" \
     "${clone_dir}/" "${clean_dir}"
 
   rm -rf "${clone_dir}"
