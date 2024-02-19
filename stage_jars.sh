@@ -24,10 +24,6 @@ source "${SCRIPT_DIR}/_utils.sh"
 
 ###########################
 
-check_variables_set FLINK_VERSION
-
-###########################
-
 function deploy_staging_jars {
   cd "${SOURCE_DIR}"
   mkdir -p "${RELEASE_DIR}"
@@ -37,8 +33,14 @@ function deploy_staging_jars {
     echo "Jars should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
     exit 1
   fi
-  flink_minor_version=$(echo ${FLINK_VERSION} | sed "s/.[0-9]\+$//")
-  version=${project_version}-${flink_minor_version}
+
+  if [ "$(is_flink_version_set_in_pom)" == "true" ]; then # it is a regular connector release
+    check_variables_set FLINK_VERSION
+    flink_minor_version=$(echo ${FLINK_VERSION} | sed "s/.[0-9]\+$//")
+    version="${project_version}-${flink_minor_version}"
+  else # it is a connector-parent release
+    version="${project_version}"
+  fi
 
   echo "Deploying jars v${version} to repository.apache.org"
   echo "To revert this step, login to 'https://repository.apache.org' -> 'Staging repositories' -> Select repository -> 'Drop'"

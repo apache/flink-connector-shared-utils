@@ -40,9 +40,10 @@ The created `svn` directory will contain a `-rc${RC_NUM}` suffix.
 ## stage_jars.sh
 
 Creates the jars from the current branch and deploys them to [repository.apache.org](https://repository.apache.org).  
-The version will be suffixed with the Flink minor version, extracted from`${FLINK_VERSION}`, to indicate the supported Flink version.  
-If a particular version of a connector supports multiple Flink versions then this script should be called multiple
-times.
+If `${FLINK_VERSION}` is defined, the version will be suffixed with the Flink minor version, extracted from
+`${FLINK_VERSION}` to indicate the supported Flink version. If `${FLINK_VERSION}` is not defined 
+(for example for `flink-connector-parent` releases), the version will be the one extracted from the pom. 
+If a particular version of a connector supports multiple Flink versions then this script should be called multiple times.
 
 ## release_source_release.sh
 

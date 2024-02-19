@@ -69,3 +69,14 @@ function set_pom_version {
 
   ${MVN} org.codehaus.mojo:versions-maven-plugin:2.8.1:set -DnewVersion=${new_version} -DgenerateBackupPoms=false --quiet
 }
+
+function is_flink_version_set_in_pom {
+  set +u
+  version=$(${MVN} help:evaluate -Dexpression="flink.version" -q -DforceStdout)
+  if [ -n "${version}" ]; then
+      echo "true"
+    else
+      echo "false"
+  fi
+  set -u
+}
