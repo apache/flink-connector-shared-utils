@@ -30,7 +30,9 @@ Updates the version in the poms of the current branch to `${NEW_VERSION}`.
 ## stage_source_release.sh
 
 Creates a source release from the current branch and pushes it via `svn`
-to [dist.apache.org](https://dist.apache.org/repos/dist/dev/flink).  
+to [dist.apache.org](https://dist.apache.org/repos/dist/dev/flink). 
+This will exclude the tools directory where the release utils are mounted. Please ensure that this directory
+does not contain anything that is needed in the source release.  
 The project name is automatically determined from the repository name, but can be overridden via `${PROJECT}`.
 The version is automatically determined from the version in the pom.  
 The created `svn` directory will contain a `-rc${RC_NUM}` suffix.
