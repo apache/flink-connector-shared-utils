@@ -73,7 +73,7 @@ function set_pom_version {
 function is_flink_version_set_in_pom {
   set +u
   version=$(${MVN} help:evaluate -Dexpression="flink.version" -q -DforceStdout)
-  if [ -n "${version}" ]; then
+  if [[ "${version}" =~ ^[0-9\.\-]+$ ]]; then
       echo "true"
     else
       echo "false"
