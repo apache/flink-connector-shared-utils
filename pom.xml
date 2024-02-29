@@ -87,6 +87,13 @@ under the License.
 				<artifactId>archunit-junit5</artifactId>
 				<version>${archunit.version}</version>
 				<scope>test</scope>
+				<!-- for dependency convergence -->
+				<exclusions>
+					<exclusion>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-engine</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 		</dependencies>
