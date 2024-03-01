@@ -32,21 +32,21 @@ jobs:
   snapshot-without-archunit-tests:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.16-SNAPSHOT
+      flink_version: 1.17-SNAPSHOT
       skip_archunit_tests: true
   # we need to test the connectors against last 2 flink major versions.
-  # let's say the connector under test was built against flink 1.17.2, disable the archunit tests when tested against 1.16.2
+  # let's say the connector under test was built against flink 1.18.0, disable the archunit tests when tested against 1.17.2
   non-main-version-without-archunit-tests:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.16.2
+      flink_version: 1.17.2
       skip_archunit_tests: true
   # we need to test the connectors against last 2 flink major versions.
-  # let's say the connector under test was built against flink 1.17.2, leave the archunit tests enabled when tested against 1.17.2
+  # let's say the connector under test was built against flink 1.18.0, leave the archunit tests enabled when tested against 1.18.0
   main-version-with-archunit-tests:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.17.2
+      flink_version: 1.18.0
   flink118-java17-version:
     uses: ./.github/workflows/ci.yml
     with:
@@ -57,13 +57,13 @@ jobs:
   disable-convergence:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.16.1
+      flink_version: 1.17.2
       connector_branch: ci_utils
       run_dependency_convergence: false
   optional_maven_profile:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.16-SNAPSHOT
+      flink_version: 1.17-SNAPSHOT
       connector_branch: ci_utils
       jdk_version: 11
       optional_maven_profiles: "java11,java11-target"
@@ -71,14 +71,14 @@ jobs:
     strategy:
       matrix:
         flink_branches: [{
-          flink: 1.16.1
+          flink: 1.17.2
 #          By not specifying a branch, it should default to the branch that triggers this workflow
         }, {
           flink: 1.17.2,
 #          By specifying this branch, it should check out this specified branch
           branch: ci_utils
         }, {
-          flink: 1.16.1,
+          flink: 1.17.2,
 #          By specifying a different branch then on L49, it should check out this specified branch
           branch: test_project
         }]
