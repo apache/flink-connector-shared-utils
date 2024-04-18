@@ -50,7 +50,7 @@ function create_pristine_source {
     --exclude ".DS_Store" \
     --exclude ".asf.yaml" \
     --exclude "target"  \
-    --exclude "tools" \
+    --exclude "tools/releasing/shared" \
     "${clone_dir}/" "${clean_dir}"
 
   rm -rf "${clone_dir}"
