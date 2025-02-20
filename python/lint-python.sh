@@ -426,7 +426,7 @@ function install_environment() {
         print_function "STEP" "install sphinx... [SUCCESS]"
     fi
 
-    # step-5 install mypy
+    # step-6 install mypy
     if [[ ${STEP} -lt 6 ]] && [[ `need_install_component "mypy"` = true ]]; then
         print_function "STEP" "installing mypy..."
         install_mypy
