@@ -51,7 +51,7 @@ function deploy_staging_jars {
 
   options="-Prelease,docs-and-source -DskipTests -DretryFailedDeploymentCount=10"
   set +u
-  ${MVN} clean deploy ${options} -Dflink.version=${FLINK_VERSION}
+  ${MVN} clean deploy ${options} -Dflink.version=${FLINK_VERSION} -Dtarget.java.version=${TARGET_JAVA_VERSION}
   set -u
 
   cd "${RELEASE_DIR}"

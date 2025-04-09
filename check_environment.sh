@@ -24,7 +24,7 @@ source "${SCRIPT_DIR}/_init.sh"
 EXIT_CODE=0
 
 function check_program_available {
-  if program=$(command -v ${1}); then
+  if program=$(command -v ${2:-${1}}); then
     printf "\t%-10s%s\n" "${1}" "using ${program}"
   else
     printf "\t%-10s%s\n" "${1}" "is not available."
@@ -40,8 +40,15 @@ check_program_available gpg
 check_program_available perl
 check_program_available sed
 check_program_available svn
-check_program_available ${MVN}
-check_program_available ${SHASUM}
+check_program_available "\${MVN}" ${MVN}
+check_program_available "\${SHASUM}" ${SHASUM}
+
+if ! (sed --version 2>/dev/null | grep -q "GNU"); then
+  echo "Warning: You are not using GNU sed. Some scripts may not work. If you are using Mac, install gnu-sed (brew install gnu-sed) and make sure that sed points to it (alias sed=\"gsed\")."
+fi
+
+echo -e "\nMaven/Java version:"
+${MVN} --version
 
 function check_git_connectivity {
   cd "${SOURCE_DIR}"
@@ -54,7 +61,7 @@ function check_git_connectivity {
   fi
 }
 
-echo "Checking git remote availability:"
+echo -e "\nChecking git remote availability:"
 if ! (check_git_connectivity); then
   EXIT_CODE=1
 fi
