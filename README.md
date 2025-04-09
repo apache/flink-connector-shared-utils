@@ -8,6 +8,17 @@ under `tools/releasing/shared`.
 # Usage
 
 Some scripts rely on environment variables to be set.  
+```
+export NEW_VERSION=3.0.0
+export TARGET_JAVA_VERSION=8
+export RC_NUM=1
+export PROJECT=flink-connector-<project>
+export REMOTE=origin
+export MAVEN_SKIP_RC=false
+export MAVEN_OPTS=""
+export MAVEN_CONFIG=""
+export MAVEN_DEBUG_OPTS=""
+```
 These are checked at the start of each script.  
 Any instance of `${some_variable}` in this document refers to an environment variable that is used by the respective
 script.
