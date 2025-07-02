@@ -30,7 +30,7 @@ on:
       jdk_version:
         description: "Jdk version to test against."
         required: false
-        default: 8, 11
+        default: 11
         type: string
       cache_flink_binary:
         description: "Whether to cache the Flink binary. If not set this parameter is inferred from the version parameter. Must be set if 'flink_url' is used."
@@ -91,7 +91,7 @@ jobs:
         with:
           java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
-          cache: 'maven'
+          cache: maven
 
       - name: Read maven version
         if: ${{ hashFiles('.mvn/wrapper/maven-wrapper.properties') != '' }}
