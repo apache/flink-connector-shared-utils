@@ -46,6 +46,9 @@ check_program_available "\${SHASUM}" ${SHASUM}
 if ! (sed --version 2>/dev/null | grep -q "GNU"); then
   echo "Warning: You are not using GNU sed. Some scripts may not work. If you are using Mac, install gnu-sed (brew install gnu-sed) and make sure that sed points to it (alias sed=\"gsed\")."
 fi
+if ! (tar --version 2>/dev/null | grep -q "GNU"); then
+  echo "Warning: You are not using GNU tar. Some scripts may not work. If you are using Mac, install gnu-tar (brew install gnu-tar) and make sure that sed points to it (alias tar=\"gtar\")."
+fi
 
 echo -e "\nMaven/Java version:"
 ${MVN} --version
