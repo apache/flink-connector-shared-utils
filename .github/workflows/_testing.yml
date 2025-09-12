@@ -46,11 +46,11 @@ jobs:
   main-version-with-archunit-tests:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.18.0
+      flink_version: 1.18.1
   flink118-java17-version:
     uses: ./.github/workflows/ci.yml
     with:
-      flink_version: 1.18.0
+      flink_version: 1.18.1
       jdk_version: 17
       connector_branch: ci_utils
       run_dependency_convergence: false
