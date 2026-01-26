@@ -36,7 +36,7 @@ function deploy_staging_jars {
 
   if [ "$(is_flink_version_set_in_pom)" == "true" ]; then # it is a regular connector release
     check_variables_set FLINK_VERSION
-    flink_minor_version=${FLINK_MINOR_VERSION:-$(echo ${FLINK_VERSION} | sed "s/.[0-9]\+$//")}
+    flink_minor_version=${FLINK_MINOR_VERSION:-$(echo ${FLINK_VERSION} | cut -d. -f1,2)}
     version="${project_version}-${flink_minor_version}"
   else # it is a connector-parent release
     version="${project_version}"
