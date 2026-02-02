@@ -158,7 +158,7 @@ jobs:
         run: wget -q -c ${{ env.binary_url }} -O - | tar -xz
 
       - name: Cache Flink binary
-        if: ${{ env.cache_binary == 'true' }}
+        if: steps.restore-cache-flink.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         id: cache-flink
         with:
