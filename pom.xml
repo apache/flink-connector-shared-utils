@@ -114,6 +114,11 @@ under the License.
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>${maven-eclipse-plugin.version}</version>
@@ -260,7 +265,6 @@ under the License.
                     <groupId>org.apache.rat</groupId>
                     <artifactId>apache-rat-plugin</artifactId>
                     <version>${apache-rat-plugin.version}</version>
-                    <inherited>false</inherited>
                     <executions>
                         <execution>
                             <phase>verify</phase>
@@ -321,6 +325,9 @@ under the License.
                             <!-- Generated content -->
                             <exclude>tools/japicmp-output/**</exclude>
                             <exclude>**/target/**</exclude>
+
+                            <!-- Test resources -->
+                            <exclude>**/test/resources/**</exclude>
                         </excludes>
                     </configuration>
                 </plugin>
