@@ -82,12 +82,12 @@ jobs:
       - run: echo "Running CI pipeline for JDK version ${{ matrix.jdk }}"
 
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: "${{ inputs.connector_branch }}"
 
       - name: Set JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
@@ -112,6 +112,10 @@ jobs:
       - name: "Enable optional maven profiles"
         if: ${{ inputs.optional_maven_profiles }}
         run: echo "MVN_COMMON_OPTIONS=${MVN_COMMON_OPTIONS} -P ${{ inputs.optional_maven_profiles }}" >> $GITHUB_ENV
+
+      - name: "Set java11 compile target if required"
+        if: ${{ matrix.jdk == 11 }}
+        run: echo "MVN_COMMON_OPTIONS=${MVN_COMMON_OPTIONS} -P java11-target" >> $GITHUB_ENV
 
       - name: "Disable archunit tests"
         if: ${{ inputs.skip_archunit_tests }}
@@ -146,7 +150,7 @@ jobs:
 
       - name: Restore cached Flink binary
         if: ${{ env.cache_binary == 'true' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: restore-cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
@@ -159,7 +163,7 @@ jobs:
 
       - name: Cache Flink binary
         if: ${{ env.cache_binary == 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         id: cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
