@@ -42,6 +42,10 @@ on:
         description: "Branch that need to be checked out"
         required: false
         type: string
+      optional_maven_profiles:
+        description: "Optional Maven profiles (passed via -P)."
+        required: false
+        type: string
 
 jobs:
   python_test:
@@ -77,6 +81,10 @@ jobs:
       - name: "Set java11 compile target if required"
         if: ${{ matrix.jdk == 11 }}
         run: echo "MVN_COMMON_OPTIONS=${MVN_COMMON_OPTIONS} -P java11-target" >> $GITHUB_ENV
+
+      - name: "Set optional Maven profiles if required"
+        if: ${{ inputs.optional_maven_profiles != '' }}
+        run: echo "MVN_COMMON_OPTIONS=${MVN_COMMON_OPTIONS} -P ${{ inputs.optional_maven_profiles }}" >> $GITHUB_ENV
 
       - name: Compile
         timeout-minutes: ${{ inputs.timeout_test }}
