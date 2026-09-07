@@ -278,7 +278,7 @@ function install_tox() {
         fi
     fi
 
-    $CURRENT_DIR/install_command.sh -q tox==3.14.0 2>&1 >/dev/null
+    $CURRENT_DIR/install_command.sh -q tox==3.14.0 "virtualenv<21.5" 2>&1 >/dev/null
     if [ $? -ne 0 ]; then
         echo "uv pip install tox failed \
         please try to exec the script again.\
