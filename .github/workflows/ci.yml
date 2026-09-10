@@ -77,6 +77,7 @@ jobs:
       MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
       FLINK_CACHE_DIR: "/tmp/cache/flink"
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
+      MVN_LICENSE_OUTPUT_FILE: "/tmp/mvn_license_output.out"
       MVN_VALIDATION_DIR: "/tmp/flink-validation-deployment"
     steps:
       - run: echo "Running CI pipeline for JDK version ${{ matrix.jdk }}"
@@ -184,12 +185,55 @@ jobs:
             -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties \
             | tee ${{ env.MVN_BUILD_OUTPUT_FILE }}
 
+      # Maven 3.9 prints mojo banners using the plugin's goal prefix ("deploy:<version>:deploy")
+      # rather than its artifactId ("maven-deploy-plugin:<version>:deploy"). flink-ci-tools'
+      # DeployParser and DependencyParser match on the artifactId spelling, so on Maven 3.9 they
+      # extract 0 modules and the NOTICE half of the license check silently degrades to a no-op
+      # that still exits 0. Rewrite the two affected banners back to the 3.8 spelling.
+      # Remove this step once connectors depend on a flink-ci-tools release containing the parser
+      # fix from FLINK-40459.
+      - name: Normalize Maven 3.9 mojo banners for the license checker
+        run: |
+          sed -E \
+            -e 's/^(\[INFO\] --- )deploy:/\1maven-deploy-plugin:/' \
+            -e 's/^(\[INFO\] --- )dependency:/\1maven-dependency-plugin:/' \
+            ${MVN_BUILD_OUTPUT_FILE} > ${MVN_BUILD_OUTPUT_FILE}.normalized
+          mv ${MVN_BUILD_OUTPUT_FILE}.normalized ${MVN_BUILD_OUTPUT_FILE}
+
       - name: Check licensing
         run: |
+          set -o pipefail
+
+          # Log config for this step only. The repo's tools/ci/log4j.properties differs per
+          # connector and per release branch (some set rootLogger.level = OFF, others shadow
+          # org.apache.flink at WARN), so it cannot be relied on to surface the checker's own
+          # output that the assertion below reads.
+          LICENSE_LOG_CONFIG=$(mktemp -d)/log4j.properties
+          cat > ${LICENSE_LOG_CONFIG} <<'LOG4J'
+          rootLogger.level = WARN
+          rootLogger.appenderRef.console.ref = STDOUT
+          appender.console.name = STDOUT
+          appender.console.type = CONSOLE
+          appender.console.layout.type = PatternLayout
+          appender.console.layout.pattern = %-5p %c{1} - %m%n
+          logger.licensechecker.name = org.apache.flink.tools.ci.licensecheck
+          logger.licensechecker.level = INFO
+          LOG4J
+
           mvn ${MVN_COMMON_OPTIONS} exec:java@check-license -N \
             -Dexec.args="${{ env.MVN_BUILD_OUTPUT_FILE }} $(pwd) ${{ env.MVN_VALIDATION_DIR }}" \
             ${{ env.MVN_CONNECTION_OPTIONS }} \
-            -Dlog4j.configurationFile=file://$(pwd)/tools/ci/log4j.properties
+            -Dlog4j.configurationFile=file://${LICENSE_LOG_CONFIG} \
+            | tee ${MVN_LICENSE_OUTPUT_FILE}
+
+          # A green exit is not evidence that the NOTICE check ran: when the build log cannot be
+          # parsed the checker reports 0 deployed modules, demotes every NOTICE entry to a
+          # TOLERATED "not bundled, but listed" warning and still exits 0. Require a non-zero
+          # module count so a silently skipped check fails the build instead.
+          if ! grep -qE "Extracted [1-9][0-9]* modules that were deployed" ${MVN_LICENSE_OUTPUT_FILE}; then
+            echo "::error::The license check did not inspect any deployed module; refusing to pass it as green."
+            exit 1
+          fi
 
       - name: Print JVM thread dumps when cancelled
         if: ${{ failure() }}
