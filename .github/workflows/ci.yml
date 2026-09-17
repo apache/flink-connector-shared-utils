@@ -150,7 +150,7 @@ jobs:
 
       - name: Restore cached Flink binary
         if: ${{ env.cache_binary == 'true' }}
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6.1.0
         id: restore-cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
@@ -163,7 +163,7 @@ jobs:
 
       - name: Cache Flink binary
         if: ${{ env.cache_binary == 'true' }}
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6.1.0
         id: cache-flink
         with:
           path: ${{ env.FLINK_CACHE_DIR }}
