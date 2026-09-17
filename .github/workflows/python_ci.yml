@@ -69,6 +69,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
       
+      - name: Read maven version
+        if: ${{ hashFiles('.mvn/wrapper/maven-wrapper.properties') != '' }}
+        # extract version from property
+        # distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.6/apache-maven-3.8.6-bin.zip
+        # => MAVEN_VERSION=3.8.6
+        run: cat .mvn/wrapper/maven-wrapper.properties | grep distributionUrl | grep -o -E "/[0-9]+\.[0-9]+\.[0-9]+/" | tr -d '/' | (echo -n "MAVEN_VERSION=" && cat) >> $GITHUB_ENV
+
       - name: Setup Maven with mvnw version or version 3.8.6
         uses: stCarolas/setup-maven@v5
         with:
