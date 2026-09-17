@@ -52,7 +52,7 @@ jobs:
     timeout-minutes: ${{ inputs.timeout_global }}
     env:
       MVN_COMMON_OPTIONS: -U -B --no-transfer-progress -Dflink.version=${{ inputs.flink_version }} -DskipTests
-      MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+      MVN_CONNECTION_OPTIONS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.timeout=60000 -Daether.connector.http.connectionTimeout=60000 -Daether.connector.http.requestTimeout=120000
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
     steps:
       - run: echo "Running CI pipeline for JDK version ${{ matrix.jdk }}"
