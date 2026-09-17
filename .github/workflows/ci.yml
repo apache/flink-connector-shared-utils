@@ -87,7 +87,7 @@ jobs:
           ref: "${{ inputs.connector_branch }}"
 
       - name: Set JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6.0.1
         with:
           java-version: ${{ matrix.jdk }}
           distribution: 'temurin'
