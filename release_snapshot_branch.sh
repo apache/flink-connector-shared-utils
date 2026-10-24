@@ -20,16 +20,15 @@
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
 source "${SCRIPT_DIR}/_init.sh"
+source "${SCRIPT_DIR}/_utils.sh"
 
 ###########################
 
 function create_snapshot_branch {
   cd "${SOURCE_DIR}"
 
-  set +u
-  version=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout | sed "s/-SNAPSHOT//")
-  set -u
-  branch="v${version}"
+  version=$(get_pom_version)
+  branch="v${version%-SNAPSHOT}"
 
   git checkout -b ${branch}
   git push ${REMOTE} ${branch}:${branch}
