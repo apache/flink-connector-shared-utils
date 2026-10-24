@@ -34,7 +34,8 @@ function deploy_staging_jars {
     exit 1
   fi
 
-  if [ "$(is_flink_version_set_in_pom)" == "true" ]; then # it is a regular connector release
+  flink_version_set=$(is_flink_version_set_in_pom)
+  if [ "${flink_version_set}" == "true" ]; then # it is a regular connector release
     check_variables_set FLINK_VERSION
     flink_minor_version=${FLINK_MINOR_VERSION:-$(echo ${FLINK_VERSION} | cut -d. -f1,2)}
     version="${project_version}-${flink_minor_version}"
