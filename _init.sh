@@ -24,8 +24,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-export SHELLOPTS
-
 ###########################
 
 TARGET_JAVA_VERSION=${TARGET_JAVA_VERSION:-8}
