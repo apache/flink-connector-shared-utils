@@ -33,7 +33,7 @@ function update_branch_version {
 
   set_pom_version "${NEW_VERSION}"
 
-  git commit -am "Update version to $NEW_VERSION"
+  git commit -m "Update version to $NEW_VERSION" -- '*pom.xml'
 
   echo "Done."
 }
