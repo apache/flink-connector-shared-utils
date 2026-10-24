@@ -48,7 +48,12 @@ function create_source_release {
   mv ${clone_dir} ${versioned_dir}
 
   cd "${ARTIFACTS_DIR}"
-  tar czf ${ARTIFACTS_DIR}/${project}-${version}-src.tgz ${versioned_dir##*/}
+  # macOS's bsdtar otherwise adds AppleDouble ._* files and extended attributes; busybox tar has no --no-xattrs
+  tar_options=""
+  case "$(tar --version 2>/dev/null)" in
+    *bsdtar*) tar_options="--no-xattrs" ;;
+  esac
+  COPYFILE_DISABLE=1 tar ${tar_options} -czf ${ARTIFACTS_DIR}/${project}-${version}-src.tgz ${versioned_dir##*/}
   gpg --armor --detach-sig ${ARTIFACTS_DIR}/${project}-${version}-src.tgz
   ${SHASUM} ${project}-${version}-src.tgz >${project}-${version}-src.tgz.sha512
 
