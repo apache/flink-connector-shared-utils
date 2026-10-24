@@ -28,38 +28,6 @@ check_variables_set RC_NUM
 
 ###########################
 
-function create_source_release {
-  cd ${SOURCE_DIR}
-  mkdir -p ${RELEASE_DIR}
-  mkdir -p ${ARTIFACTS_DIR}
-
-  project=${PROJECT:-${PWD##*/}}
-  version=$(get_pom_version)
-  if [[ ${version} =~ -SNAPSHOT$ ]]; then
-    echo "Source releases should not be created for SNAPSHOT versions. Use 'update_branch_version.sh' first."
-    exit 1
-  fi
-
-  echo "Creating source release v${version}"
-  echo "To revert this step, run 'rm ${ARTIFACTS_DIR}'"
-
-  clone_dir=$(create_pristine_source "${SOURCE_DIR}" "${RELEASE_DIR}")
-  versioned_dir="${ARTIFACTS_DIR}/${project}-${version}"
-  mv ${clone_dir} ${versioned_dir}
-
-  cd "${ARTIFACTS_DIR}"
-  # macOS's bsdtar otherwise adds AppleDouble ._* files and extended attributes; busybox tar has no --no-xattrs
-  tar_options=""
-  case "$(tar --version 2>/dev/null)" in
-    *bsdtar*) tar_options="--no-xattrs" ;;
-  esac
-  COPYFILE_DISABLE=1 tar ${tar_options} -czf ${ARTIFACTS_DIR}/${project}-${version}-src.tgz ${versioned_dir##*/}
-  gpg --armor --detach-sig ${ARTIFACTS_DIR}/${project}-${version}-src.tgz
-  ${SHASUM} ${project}-${version}-src.tgz >${project}-${version}-src.tgz.sha512
-
-  rm -rf ${versioned_dir}
-}
-
 function deploy_source_release {
   cd ${SOURCE_DIR}
   project=${PROJECT:-${PWD##*/}}
