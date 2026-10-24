@@ -70,7 +70,8 @@ function clear_exclusions() {
   exclusion_end=$(($(sed -n '/<!-- MARKER: end exclusions/=' pom.xml) - 1))
 
   if [[ $exclusion_start -lt $exclusion_end ]]; then
-    sed -i "${exclusion_start},${exclusion_end}d" pom.xml
+    sed -i.bak "${exclusion_start},${exclusion_end}d" pom.xml
+    rm -f pom.xml.bak
   fi
 }
 
