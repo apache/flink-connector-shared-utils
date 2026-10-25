@@ -82,15 +82,19 @@ function set_pom_version {
 
 function is_flink_version_set_in_pom {
   local version
+  local version_pattern='^[0-9]+(\.[0-9]+)*(-[0-9A-Za-z.]+)*$'
   set +u
   version=$(${MVN} help:evaluate -Dexpression="flink.version" -q -DforceStdout) || {
     echo "Maven failed to read flink.version." >&2
     exit 1
   }
-  if [[ "${version}" =~ ^[0-9\.\-]+$ ]]; then
-      echo "true"
-    else
-      echo "false"
+  if [[ ${version} =~ ${version_pattern} ]]; then
+    echo "true"
+  elif [[ -z ${version} || ${version} == "null object or invalid expression" ]]; then
+    echo "false"
+  else
+    echo "Unexpected flink.version '${version}'." >&2
+    exit 1
   fi
   set -u
 }
