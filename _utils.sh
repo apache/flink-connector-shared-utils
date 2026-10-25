@@ -61,12 +61,10 @@ function create_pristine_source {
 function get_pom_version {
   local version
   local version_pattern='^[0-9]+(\.[0-9]+)*(-[0-9A-Za-z.]+)*$'
-  set +u
   version=$(${MVN} help:evaluate -Dexpression="project.version" -q -DforceStdout) || {
     echo "Maven failed to read the project version." >&2
     exit 1
   }
-  set -u
   if [[ ! ${version} =~ ${version_pattern} ]]; then
     echo "Unexpected project version '${version}'." >&2
     exit 1
@@ -83,7 +81,6 @@ function set_pom_version {
 function is_flink_version_set_in_pom {
   local version
   local version_pattern='^[0-9]+(\.[0-9]+)*(-[0-9A-Za-z.]+)*$'
-  set +u
   version=$(${MVN} help:evaluate -Dexpression="flink.version" -q -DforceStdout) || {
     echo "Maven failed to read flink.version." >&2
     exit 1
@@ -96,5 +93,4 @@ function is_flink_version_set_in_pom {
     echo "Unexpected flink.version '${version}'." >&2
     exit 1
   fi
-  set -u
 }
