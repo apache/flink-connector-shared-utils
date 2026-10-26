@@ -5,6 +5,38 @@ This is a collection of release utils for [Apache Flink](https://flink.apache.or
 The scripts assume that they are integrated into a connector repo as a submodule into the connector repo
 under `tools/releasing/shared`.
 
+## Setting Up as a Git Submodule
+
+### First Time Addition
+
+To add the shared utils as a submodule to your connector repository for the first time, run:
+
+```shell
+git submodule add https://github.com/apache/flink-connector-shared-utils.git tools/releasing/shared
+```
+
+This will clone the repository into `tools/releasing/shared` and add a `.gitmodules` file to track it.
+
+### Initializing an Existing Submodule
+
+If you have cloned a connector repository that already has the submodule configured (i.e., `.gitmodules` is present
+but the `tools/releasing/shared` directory is empty), initialize and fetch the submodule with:
+
+```shell
+git submodule update --init --recursive
+```
+
+### Updating the Submodule
+
+To update the submodule to the latest commit on its tracked branch, run:
+
+```shell
+git submodule update --remote
+```
+
+This will fetch the latest changes from the upstream `flink-connector-shared-utils` repository and update the
+submodule reference in your connector repository.
+
 # Usage
 
 Some scripts rely on environment variables to be set.  
