@@ -44,6 +44,20 @@ The project name is automatically determined from the repository name, but can b
 The version is automatically determined from the version in the pom.  
 The created `svn` directory will contain a `-rc${RC_NUM}` suffix.
 
+## stage_source_release_atr.sh
+
+Creates the same source release as `stage_source_release.sh`, but uploads it with `rsync` to the draft of the release
+on [Apache Trusted Releases](https://releases.apache.org) (ATR) instead of committing it to `svn`.
+The draft must exist before the upload, created with "Start a new release" for version `${version}` in ATR, and
+your SSH public key must be added to ATR.
+`${ATR_UID}` is your Apache user id. The ATR project key must match the project name.
+The draft has no `-rc${RC_NUM}` suffix: each upload creates a new revision of the same ATR release.
+ATR rejects the `openrsync` that macOS ships as `rsync`; install rsync, for example with `brew install rsync`.
+
+```
+ATR_UID=<apache id> ./stage_source_release_atr.sh
+```
+
 ## stage_jars.sh
 
 Creates the jars from the current branch and deploys them to [repository.apache.org](https://repository.apache.org).  
@@ -83,12 +97,12 @@ additionally be called on the `main` branch.
 3. checkout a specific commit to create a release from
 4. run `check_environment.sh`
 5. run `update_branch_version.sh`
-6. run `stage_source_release.sh`
+6. run `stage_source_release.sh`, or `stage_source_release_atr.sh` when releasing with ATR
 7. run `stage_jars.sh` (once for each supported Flink version)
 8. run `release_git_tag.sh` (with `RC_NUM`)
 9. vote on release
 10. finalize release or cancel and go back to step 2
-11. run `release_source_release.sh`
+11. run `release_source_release.sh`, unless the release was made with ATR, which publishes it to the release directory itself
 12. run `release_git_tag.sh` (without `RC_NUM`)
 13. run `update_japicmp_configuration.sh` (on snapshot branch, and maybe `main`)
 
