@@ -92,7 +92,7 @@ under the License.
         <!-- Maven plugin versions -->
         <apache-rat-plugin.version>0.13</apache-rat-plugin.version>
         <checkstyle.version>10.18.2</checkstyle.version>
-        <cyclonedx-maven-plugin.version>2.9.1</cyclonedx-maven-plugin.version>
+        <cyclonedx-maven-plugin.version>2.9.3</cyclonedx-maven-plugin.version>
         <directory-maven-plugin.version>0.1</directory-maven-plugin.version>
         <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
         <google-java-format.version>1.24.0</google-java-format.version>
@@ -116,6 +116,11 @@ under the License.
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -688,6 +693,8 @@ under the License.
                     </executions>
                     <configuration>
                         <verbose>false</verbose>
+                        <!-- The plugin would list provided dependencies as required, as if shipped -->
+                        <includeProvidedScope>false</includeProvidedScope>
                     </configuration>
                 </plugin>
             </plugins>
@@ -888,6 +895,13 @@ under the License.
                         <plugin>
                             <groupId>io.github.zentol.japicmp</groupId>
                             <artifactId>japicmp-maven-plugin</artifactId>
+                            <configuration>
+                                <skip>true</skip>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.cyclonedx</groupId>
+                            <artifactId>cyclonedx-maven-plugin</artifactId>
                             <configuration>
                                 <skip>true</skip>
                             </configuration>
