@@ -98,6 +98,8 @@ function is_flink_version_set_in_pom {
 function create_source_release {
   cd ${SOURCE_DIR}
   mkdir -p ${RELEASE_DIR}
+  # files left by a failed run would stop gpg at the existing .asc and be uploaded again
+  rm -rf ${ARTIFACTS_DIR}
   mkdir -p ${ARTIFACTS_DIR}
 
   project=${PROJECT:-${PWD##*/}}
