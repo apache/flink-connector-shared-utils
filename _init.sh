@@ -24,8 +24,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-export SHELLOPTS
-
 ###########################
 
 TARGET_JAVA_VERSION=${TARGET_JAVA_VERSION:-8}
@@ -47,7 +45,7 @@ ARTIFACTS_DIR=${SOURCE_DIR}/tools/releasing/release/artifacts
 SVN_DEV_DIR="https://dist.apache.org/repos/dist/dev/flink"
 SVN_RELEASE_DIR="https://dist.apache.org/repos/dist/release/flink"
 
-if [ -n "MVN" ]; then
+if [ -z "${MVN:-}" ]; then
   if [ -e "${SOURCE_DIR}/mvnw" ]; then
     MVN=${SOURCE_DIR}/mvnw
   else
