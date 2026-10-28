@@ -22,7 +22,7 @@ under the License.
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>20</version>
+        <version>39</version>
     </parent>
 
     <groupId>org.apache.flink</groupId>
@@ -62,6 +62,11 @@ under the License.
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <!-- The Apache parent activates a jdk9+ profile that sets maven.compiler.release to
+        its javaVersion (8). The compiler and javadoc plugins override release, so source and
+        target stay authoritative, but IntelliJ and the jar manifest's Java-Version still read
+        this property. Keep it at the source level, as Flink does. -->
+        <maven.compiler.release>${maven.compiler.source}</maven.compiler.release>
 
         <test.unit.pattern>**/*Test.*</test.unit.pattern>
         <flink.XmxITCase>2048m</flink.XmxITCase>
@@ -93,20 +98,17 @@ under the License.
         <apache-rat-plugin.version>0.13</apache-rat-plugin.version>
         <checkstyle.version>10.18.2</checkstyle.version>
         <cyclonedx-maven-plugin.version>2.9.1</cyclonedx-maven-plugin.version>
-        <directory-maven-plugin.version>0.1</directory-maven-plugin.version>
+        <directory-maven-plugin.version>1.0</directory-maven-plugin.version>
         <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
         <google-java-format.version>1.24.0</google-java-format.version>
         <japicmp-maven-plugin.version>0.18.5</japicmp-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <maven-eclipse-plugin.version>2.8</maven-eclipse-plugin.version>
-        <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
-        <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
-        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-        <maven-javadoc-plugin.version>3.8.0</maven-javadoc-plugin.version>
-        <maven-release-plugin.version>2.1</maven-release-plugin.version>
         <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <!-- Deliberately pinned below the version supplied by the Apache parent: bumping
+        surefire changes test forking behaviour across every connector and belongs in its own
+        ticket. -->
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
     </properties>
@@ -204,7 +206,6 @@ under the License.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${maven-enforcer-plugin.version}</version>
                     <executions>
                         <execution>
                             <id>enforce-maven</id>
@@ -437,6 +438,8 @@ under the License.
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
+                        <!-- Keep source/target authoritative; see the maven.compiler.release note. -->
+                        <release combine.self="override"/>
                         <!-- The semantics of this option are reversed, see MCOMPILER-209. -->
                         <useIncrementalCompilation>false</useIncrementalCompilation>
                         <compilerArgs>
@@ -449,7 +452,6 @@ under the License.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven-jar-plugin.version}</version>
                     <configuration>
                         <archive>
                             <!-- Globally exclude maven metadata, because it may accidentally bundle files we don't intend to -->
@@ -563,8 +565,9 @@ under the License.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
+                        <!-- Keep source/target authoritative; see the maven.compiler.release note. -->
+                        <release combine.self="override"/>
                         <quiet>true</quiet>
                         <detectOfflineLinks>false</detectOfflineLinks>
                         <additionalJOptions combine.children="append">
@@ -708,7 +711,6 @@ under the License.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-source-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -753,7 +755,6 @@ under the License.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -805,7 +806,6 @@ under the License.
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-release-plugin</artifactId>
-                            <version>${maven-release-plugin.version}</version>
                             <configuration>
                                 <mavenExecutorId>forked-path</mavenExecutorId>
                                 <useReleaseProfile>false</useReleaseProfile>
